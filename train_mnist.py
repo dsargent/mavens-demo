@@ -4,7 +4,7 @@ from keras.preprocessing.image import array_to_img
 from keras.models import Sequential
 from keras.layers import Dense
 from tensorflow.python.keras.utils.np_utils import to_categorical
-
+from keras.utils.vis_utils import plot_model
 
 def view_image(img):
     img1 = np.expand_dims(img, 2)
@@ -79,4 +79,7 @@ print(np.argmax(predictions, axis=1)) # [7, 2, 1, 0, 4]
 
 # Check our predictions against the ground truths.
 print(test_labels[:5]) # [7, 2, 1, 0, 4]
+
+# Plot graph of model
+plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
 
