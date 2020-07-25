@@ -1,24 +1,36 @@
+import keras
 import mnist
 import numpy as np
-from keras.preprocessing.image import array_to_img
-from keras.models import Sequential
 from keras.layers import Dense
-from tensorflow.python.keras.utils.np_utils import to_categorical
+from keras.models import Sequential
+from keras.preprocessing.image import array_to_img
+from keras.utils import to_categorical
 from keras.utils.vis_utils import plot_model
+
+
+
 
 def view_image(img):
     img1 = np.expand_dims(img, 2)
     pil_img = array_to_img(img1)
     pil_img.show()
 
+
+
+# Load datasets
 train_images = mnist.train_images()
 train_labels = mnist.train_labels()
 test_images = mnist.test_images()
 test_labels = mnist.test_labels()
 
+
+
+
 # Normalize the images.
 train_images = (train_images / 255) - 0.5
 test_images = (test_images / 255) - 0.5
+
+
 
 # Flatten the images.
 train_images = train_images.reshape((-1, 784))
@@ -29,19 +41,18 @@ print(test_images.shape)  # (10000, 784)
 
 # Build keras model
 model = Sequential([
-    Dense(64, activation='relu', name='Input'),
+    Dense(64, activation='relu', name='Input', input_shape=(784,)),
     Dense(64, activation='relu', name='Hidden1'),
     Dense(10, activation='softmax', name='Output'),
 ])
 
 # Compile the model
 model.compile(
-    optimizer='adam',
-    loss='categorical_crossentropy',
+    optimizer=keras.optimizers.Adam(),
+    loss=keras.losses.categorical_crossentropy,
     metrics=['accuracy'],
 )
 
-# Train the model
 # Train the model.
 model.fit(
     train_images,
